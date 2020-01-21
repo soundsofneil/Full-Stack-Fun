@@ -67,7 +67,6 @@ a {
 #profileStats ul li {
 	margin-right: 20px;
 	font-weight: bold;
-	font-size: 150%;
 	list-style: none; /* Gets rid of list bullet points */
 	text-align: center;
 
@@ -82,6 +81,8 @@ a {
 	display: block;
 
 	/* Add properties below */
+	font-size: 150%;
+
 }
 
 
@@ -173,7 +174,14 @@ a {
 /* Style the big profile picture circle here. */
 #bigProfilePicCircle {
 	/* Add properties below */
+	top:230px;
+	left:100px;
+	position:absolute;
+}
 
+.bigProfilePic {
+	border-radius: 50%;
+	width:200px;
 }
 
 
