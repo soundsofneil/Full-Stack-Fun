@@ -53,7 +53,6 @@ a {
 #profileStats {
 	padding: 5px;
 	background-color: white;
-	margin-left: 390px
 }
 
 #profileStats ul {
@@ -61,6 +60,7 @@ a {
 	padding: 3px;
 
 	/* Add properties below */
+	margin-left: 390px
 
 }
 
@@ -92,7 +92,11 @@ a {
 	padding: 10px;
 
 	/* Add properties below */
-
+	margin-left: 50px;
+	margin-top:20px;
+	width: 300px;
+	min-height:300px;
+	float:left
 }
 
 
@@ -103,6 +107,8 @@ a {
 	background-color: white;
 
 	/* Add properties below */
+	margin-left:390px;
+	margin-top:20px;
 
 }
 
@@ -121,6 +127,8 @@ a {
 	font-weight: bold;
 
 	/* Add properties below */
+	list-style: none;
+	display:inline-block;
 
 
 }
