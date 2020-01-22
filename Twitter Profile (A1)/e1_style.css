@@ -110,6 +110,7 @@ a {
 	/* Add properties below */
 	margin-left:390px;
 	margin-top:20px;
+	width: 600px;
 
 }
 
@@ -182,6 +183,8 @@ a {
 .bigProfilePic {
 	border-radius: 50%;
 	width:200px;
+	border-style: solid;
+	border-color:#ffffff;
 }
 
 
