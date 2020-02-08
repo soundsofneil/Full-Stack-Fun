@@ -177,7 +177,6 @@ function getBookInfo(e) {
 // Adds a book to the library table.
 function addBookToLibraryTable(book) {
 	// Add code here
-	let bookTable = document.getElementById('bookTable');
 	let newRow = bookTable.insertRow(bookTable.rows.length);
 	let bookIDCell = newRow.insertCell(0);
  	let titleCell = newRow.insertCell(1);
@@ -192,7 +191,6 @@ function addBookToLibraryTable(book) {
 // Displays deatiled info on the book in the Book Info Section
 function displayBookInfo(book) {
 	// Add code here
-		let bookInfo = document.getElementById('bookInfo');
 		bookInfo.children[0].children[0].innerText = book.bookId;
 		bookInfo.children[1].children[0].innerText = book.title;
 		bookInfo.children[2].children[0].innerText = book.author;
@@ -211,6 +209,9 @@ function displayBookInfo(book) {
 // (don't forget to add a 'return' button).
 function addBookToPatronLoans(book) {
 	// Add code here
+
+	//Update List of Books table
+	bookTable.rows[book.bookId+1].cells[2].innerHTML = book.patron.name;
 
 }
 
