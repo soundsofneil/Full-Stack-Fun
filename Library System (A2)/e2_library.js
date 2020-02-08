@@ -30,7 +30,7 @@ class Book {
 
 		const self = this; // keep book in scope of anon function (why? the call-site for 'this' in the anon function is the DOM window)
 		setTimeout(function() {
-			
+
 			console.log('overdue book!', self.title)
 			changeToOverdue(self);
 
@@ -48,7 +48,7 @@ const Patron = function(name) {
 }
 
 
-// Adding these books does not change the DOM - we are simply setting up the 
+// Adding these books does not change the DOM - we are simply setting up the
 // book and patron arrays as they appear initially in the DOM.
 libraryBooks.push(new Book('Harry Potter', 'J.K. Rowling', 'Fantasy'));
 libraryBooks.push(new Book('1984', 'G. Orwell', 'Dystopian Fiction'));
@@ -63,7 +63,7 @@ libraryBooks[0].patron = patrons[0]
 libraryBooks[0].setLoanTime()  // check console to see a log after 3 seconds
 
 
-/* Select all DOM form elements you'll need. */ 
+/* Select all DOM form elements you'll need. */
 const bookAddForm = document.querySelector('#bookAddForm');
 const bookInfoForm = document.querySelector('#bookInfoForm');
 const bookLoanForm = document.querySelector('#bookLoanForm');
@@ -94,7 +94,7 @@ patronEntries.addEventListener('click', returnBookToLibrary)
 /** ADD your code to the functions below. DO NOT change the function signatures. **/
 
 
-/*** Functions that don't edit DOM themselves, but can call DOM functions 
+/*** Functions that don't edit DOM themselves, but can call DOM functions
      Use the book and patron arrays appropriately in these functions.
  ***/
 
@@ -103,13 +103,19 @@ function addNewBookToBookList(e) {
 	e.preventDefault();
 
 	// Add book book to global array
+	let source = e.currentTarget || e.srcElement;
+	let sourceArray = source.elements;
+	let newBook = new Book(sourceArray[0].value, sourceArray[1].value, sourceArray[2].value);
+	libraryBooks.push(newBook);
+
 
 
 	// Call addBookToLibraryTable properly to add book to the DOM
-	
+	addBookToLibraryTable(newBook);
+
 }
 
-// Changes book patron information, and calls 
+// Changes book patron information, and calls
 function loanBookToPatron(e) {
 	e.preventDefault();
 
@@ -117,13 +123,13 @@ function loanBookToPatron(e) {
 
 
 	// Add patron to the book's patron property
-	
+
 
 	// Add book to the patron's book table in the DOM by calling addBookToPatronLoans()
-	
+
 
 	// Start the book loan timer.
-	
+
 
 }
 
@@ -157,7 +163,7 @@ function getBookInfo(e) {
 
 	// Get correct book
 
-	// Call displayBookInfo()	
+	// Call displayBookInfo()
 
 }
 
@@ -168,7 +174,7 @@ function getBookInfo(e) {
 // Adds a book to the library table.
 function addBookToLibraryTable(book) {
 	// Add code here
-
+	console.log("Hello");
 }
 
 
@@ -178,7 +184,7 @@ function displayBookInfo(book) {
 
 }
 
-// Adds a book to a patron's book list with a status of 'Within due date'. 
+// Adds a book to a patron's book list with a status of 'Within due date'.
 // (don't forget to add a 'return' button).
 function addBookToPatronLoans(book) {
 	// Add code here
@@ -204,4 +210,3 @@ function changeToOverdue(book) {
 	// Add code here
 
 }
-
