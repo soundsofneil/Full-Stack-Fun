@@ -111,15 +111,6 @@ function addNewBookToBookList(e) {
 
 	// Call addBookToLibraryTable properly to add book to the DOM
 	addBookToLibraryTable(newBook);
-	let bookTable = document.getElementById('bookTable');
-	let newRow = bookTable.insertRow(bookTable.rows.length);
-	let bookIDCell = newRow.insertCell(0);
- 	let titleCell = newRow.insertCell(1);
-	let patronCell = newRow.insertCell(2);
-
-	bookIDCell.innerHTML = newBook.bookId;
-	titleCell.innerHTML = '<strong> ' + newBook.title + '</strong>';
-	patronCell.innerHTML = newBook.patron;
 }
 
 // Changes book patron information, and calls
@@ -182,6 +173,14 @@ function getBookInfo(e) {
 function addBookToLibraryTable(book) {
 	// Add code here
 	let bookTable = document.getElementById('bookTable');
+	let newRow = bookTable.insertRow(bookTable.rows.length);
+	let bookIDCell = newRow.insertCell(0);
+ 	let titleCell = newRow.insertCell(1);
+	let patronCell = newRow.insertCell(2);
+
+	bookIDCell.innerHTML = book.bookId;
+	titleCell.innerHTML = '<strong> ' + book.title + '</strong>';
+	patronCell.innerHTML = book.patron;
 }
 
 
