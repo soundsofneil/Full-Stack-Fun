@@ -103,8 +103,8 @@ function addNewBookToBookList(e) {
 	e.preventDefault();
 
 	// Add book book to global array
-	let sourceArray = e.target.elements;
-	let newBook = new Book(sourceArray[0].value, sourceArray[1].value, sourceArray[2].value);
+	let addBookInputArray = e.target.elements;
+	let newBook = new Book(addBookInputArray[0].value, addBookInputArray[1].value, addBookInputArray[2].value);
 	libraryBooks.push(newBook);
 
 
@@ -118,13 +118,16 @@ function loanBookToPatron(e) {
 	e.preventDefault();
 
 	// Get correct book and patron
-
+	let loanBookIdInputArray = e.target.elements;
+	let loanBook = libraryBooks[loanBookIdInputArray[0].value];
+	let loanPatron = patrons[loanBookIdInputArray[1].value];
 
 	// Add patron to the book's patron property
+	loanBook.patron = loanPatron;
 
 
 	// Add book to the patron's book table in the DOM by calling addBookToPatronLoans()
-
+	addBookToPatronLoans(loanBook);
 
 	// Start the book loan timer.
 
@@ -160,8 +163,10 @@ function getBookInfo(e) {
 	e.preventDefault();
 
 	// Get correct book
-
+	let getBookInput = e.target.elements;
+	let bookToGet = libraryBooks[getBookInput.bookInfoId.value];
 	// Call displayBookInfo()
+	displayBookInfo(bookToGet);
 
 }
 
@@ -187,6 +192,18 @@ function addBookToLibraryTable(book) {
 // Displays deatiled info on the book in the Book Info Section
 function displayBookInfo(book) {
 	// Add code here
+		let bookInfo = document.getElementById('bookInfo');
+		bookInfo.children[0].children[0].innerText = book.bookId;
+		bookInfo.children[1].children[0].innerText = book.title;
+		bookInfo.children[2].children[0].innerText = book.author;
+		bookInfo.children[3].children[0].innerText = book.genre;
+		if (book.patron == null)
+		{
+			bookInfo.children[4].children[0].innerText = 'N/A';
+		}
+		else {
+			bookInfo.children[4].children[0].innerText = book.patron.name;
+		}
 
 }
 
