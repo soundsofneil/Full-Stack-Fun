@@ -103,8 +103,7 @@ function addNewBookToBookList(e) {
 	e.preventDefault();
 
 	// Add book book to global array
-	let source = e.currentTarget || e.srcElement;
-	let sourceArray = source.elements;
+	let sourceArray = e.target.elements;
 	let newBook = new Book(sourceArray[0].value, sourceArray[1].value, sourceArray[2].value);
 	libraryBooks.push(newBook);
 
@@ -112,7 +111,15 @@ function addNewBookToBookList(e) {
 
 	// Call addBookToLibraryTable properly to add book to the DOM
 	addBookToLibraryTable(newBook);
+	let bookTable = document.getElementById('bookTable');
+	let newRow = bookTable.insertRow(bookTable.rows.length);
+	let bookIDCell = newRow.insertCell(0);
+ 	let titleCell = newRow.insertCell(1);
+	let patronCell = newRow.insertCell(2);
 
+	bookIDCell.innerHTML = newBook.bookId;
+	titleCell.innerHTML = '<strong> ' + newBook.title + '</strong>';
+	patronCell.innerHTML = newBook.patron;
 }
 
 // Changes book patron information, and calls
@@ -174,7 +181,7 @@ function getBookInfo(e) {
 // Adds a book to the library table.
 function addBookToLibraryTable(book) {
 	// Add code here
-	console.log("Hello");
+	let bookTable = document.getElementById('bookTable');
 }
 
 
