@@ -107,8 +107,6 @@ function addNewBookToBookList(e) {
 	let newBook = new Book(addBookInputArray[0].value, addBookInputArray[1].value, addBookInputArray[2].value);
 	libraryBooks.push(newBook);
 
-
-
 	// Call addBookToLibraryTable properly to add book to the DOM
 	addBookToLibraryTable(newBook);
 }
