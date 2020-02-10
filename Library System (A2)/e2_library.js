@@ -130,21 +130,23 @@ function loanBookToPatron(e) {
 	addBookToPatronLoans(loanBook);
 
 	// Start the book loan timer.
-
-
+	loanBook.setLoanTime();
 }
-
 // Changes book patron information and calls returnBookToLibraryTable()
 function returnBookToLibrary(e){
 	e.preventDefault();
 	// check if return button was clicked, otherwise do nothing.
+	if (e.target.innerHTML == "return")
+	{
 
 	// Call removeBookFromPatronTable()
-
+	let bookID = e.target.parentElement.parentElement.children[0].innerHTML.trim();
+	let returnBook = libraryBooks[bookID]
+	removeBookFromPatronTable(returnBook);
 
 	// Change the book object to have a patron of 'null'
-
-
+	returnBook.patron = null;
+	}
 }
 
 // Creates and adds a new patron
@@ -152,9 +154,12 @@ function addNewPatron(e) {
 	e.preventDefault();
 
 	// Add a new patron to global array
-
+	let addPatronInput = e.target.elements;
+	let newPatron = new Patron(addPatronInput[0].value);
+	patrons.push(newPatron);
 
 	// Call addNewPatronEntry() to add patron to the DOM
+	addNewPatronEntry(newPatron);
 
 }
 
@@ -211,7 +216,31 @@ function addBookToPatronLoans(book) {
 	// Add code here
 
 	//Update List of Books table
-	bookTable.rows[book.bookId+1].cells[2].innerHTML = book.patron.name;
+	bookTable.rows[book.bookId+1].cells[2].innerHTML = book.patron.cardNumber;
+
+	//Update Patron's book list
+	let patronBookSection = document.createElement("tr");
+	let bookIDNumber = document.createElement("td");
+	bookIDNumber.innerHTML = book.bookId;
+	let bookTitle = document.createElement("td");
+	bookTitle.innerHTML = "<strong>" + book.title + "</strong>";
+	let bookStatus = document.createElement("td");
+	bookStatus.innerHTML = '<span class="green">Within due date</span>';
+	let returnBook = document.createElement("td");
+	let returnButton = document.createElement("button");
+	returnButton.classList.add("return");
+	returnButton.innerHTML = "return";
+	returnBook.appendChild(returnButton);
+
+	patronBookSection.appendChild(bookIDNumber);
+	patronBookSection.appendChild(bookTitle);
+	patronBookSection.appendChild(bookStatus);
+	patronBookSection.appendChild(returnBook);
+
+	let patronTable = patronEntries.children[book.patron.cardNumber];
+	let patronTableBody = patronTable.children[3].firstElementChild;
+
+	patronTableBody.appendChild(patronBookSection);
 
 }
 
@@ -219,18 +248,62 @@ function addBookToPatronLoans(book) {
 // and blank book list (with only the <th> headers: BookID, Title, Status).
 function addNewPatronEntry(patron) {
 	// Add code here
+	let newPatronNode = document.createElement("div");
+	newPatronNode.classList.add("patron");
+	let nameSection = document.createElement("p");
+	nameSection.innerHTML = 'Name: <span class="bold"> ' + patron.name + '</span>';
+	let cardSection = document.createElement("p");
+	cardSection.innerHTML = 'Card Number: <span class="bold"> ' + patron.cardNumber + '</span>';
+	let booksSection = document.createElement("h4");
+	booksSection.innerHTML = 'Books on loan:';
+	newPatronNode.appendChild(nameSection);
+	newPatronNode.appendChild(cardSection);
+	newPatronNode.appendChild(booksSection);
 
+	let tableNode = document.createElement("table");
+	tableNode.classList.add("patronsLoanTable");
+	let tableBody = document.createElement("tbody");
+	let tableHeaderSection = document.createElement("tr");
+	let bookIDHeader = document.createElement("th");
+	bookIDHeader.innerHTML = 'BookID';
+	let titleHeader = document.createElement("th");
+	titleHeader.innerHTML = 'Title';
+	let statusHeader = document.createElement("th");
+	statusHeader.innerHTML = 'Status';
+	let returnHeader = document.createElement("th");
+	returnHeader.innerHTML = 'Return';
+	tableHeaderSection.appendChild(bookIDHeader);
+	tableHeaderSection.appendChild(titleHeader);
+	tableHeaderSection.appendChild(statusHeader);
+	tableHeaderSection.appendChild(returnHeader);
+	tableBody.appendChild(tableHeaderSection);
+
+	tableNode.appendChild(tableBody);
+
+
+	newPatronNode.appendChild(tableNode);
+	patronEntries.appendChild(newPatronNode);
 }
 
 
 // Removes book from patron's book table and remove patron card number from library book table
 function removeBookFromPatronTable(book) {
 	// Add code here
+	//Remove from patron's book table
+	let patronTable = patronEntries.children[book.patron.cardNumber];
+	let patronTableBookInfo = patronTable.children[3].firstElementChild;
+	let patronBookToRemove = patronTableBookInfo.lastElementChild;
+	patronTableBookInfo.removeChild(patronBookToRemove);
 
+	//Remove patron card number from library book table
+	bookTable.rows[book.bookId+1].cells[2].innerHTML = null;
 }
 
 // Set status to red 'Overdue' in the book's patron's book table.
 function changeToOverdue(book) {
 	// Add code here
+	let patronTable = patronEntries.children[book.patron.cardNumber];
+	let patronTableBookInfo = patronTable.children[3].firstElementChild.lastElementChild;
+	patronTableBookInfo.children[2].innerHTML = "<span class='red'>Overdue</span>";
 
 }
