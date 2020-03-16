@@ -47,7 +47,7 @@ const updateSystemStatus = () => {
 
 const saveRestaurantsToJSONFile = (restaurants) => {
 	/* Add your code below */
-
+	fs.writeFileSync('restaurants.json', JSON.stringify(restaurants));
 };
 
 const saveReservationsToJSONFile = (reservations) => {
@@ -60,12 +60,23 @@ const saveReservationsToJSONFile = (reservations) => {
 // Should return an array of length 0 or 1.
 const addRestaurant = (name, description) => {
 	// Check for duplicate names
-
-	return [];
+	var restaurant_list = getAllRestaurants();
+	
+	for (let i = 0; i < restaurant_list.length; i++) {
+		if (restaurant_list[i].name == name) {
+			return [];
+		}
+	}
 
 	// if no duplicate names:
-	const restaurant = null; // remove null and assign it to proper value
+	const restaurant = {
+		name: name,
+		description: description,
+		numReservations: 0,
+	};
 
+	restaurant_list.push(restaurant);
+	saveRestaurantsToJSONFile(restaurant_list);
 
 	return [restaurant];
 
@@ -86,7 +97,12 @@ const addReservation = (restaurant, time, people) => {
 // Should return an array - check to make sure restaurants.json exists
 const getAllRestaurants = () => {
 	/* Add your code below */
+	if (!fs.existsSync('restaurants.json')) {
+		return []
+	}
 
+	const restaurant_list = fs.readFileSync('restaurants.json');
+	return JSON.parse(restaurant_list);
 };
 
 // Should return the restaurant object if found, or an empty object if the restaurant is not found.

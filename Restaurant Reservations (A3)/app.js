@@ -16,17 +16,22 @@ const reservations = require('./reservations');
 const datetime = require('date-and-time') 
 
 const yargs_argv = yargs.argv
-//log(yargs_argv) // uncomment to see what is in the argument array
+log(yargs_argv) // uncomment to see what is in the argument array
 
 if ('addRest' in yargs_argv) {
 	const args = yargs_argv['addRest']
-	const rest = reservations.addRestaurant(args[0], args[1]);	
+	if (args[0] == undefined) {
+		log("No restaurant specified");
+	}	
+	else {
+	const rest = reservations.addRestaurant(args[0], args[1]);
 	if (rest.length > 0) {
 		/* complete */ 
-
+		log("Added restaurant " + args[0] + ".");
 	} else {
 		/* complete */ 
-
+		log("Duplicate restaurant not added."); 
+	}
 	}
 }
 
