@@ -3,7 +3,14 @@
 
 const log = console.log
 const fs = require('fs');
-const datetime = require('date-and-time')
+// datetime available if needed
+const datetime = require('date-and-time') 
+// Import a plugin "meridiem".
+require('date-and-time/plugin/meridiem');
+
+// Apply the plugin to "date-and-time".
+datetime.plugin('meridiem');
+
 
 const startSystem = () => {
 
@@ -52,7 +59,7 @@ const saveRestaurantsToJSONFile = (restaurants) => {
 
 const saveReservationsToJSONFile = (reservations) => {
 	/* Add your code below */
-
+	fs.writeFileSync('reservations.json', JSON.stringify(reservations));
 };
 
 /*********/
@@ -84,9 +91,29 @@ const addRestaurant = (name, description) => {
 
 // should return the added reservation object
 const addReservation = (restaurant, time, people) => {
+	var reservation_list =  getAllReservations();
+	var restaurant_list = getAllRestaurants();
 	
 	/* Add your code below */
-	const reservation = null; // remove null and assign it to proper value
+	const reservation = {
+		restaurant: restaurant,
+		time: new Date(time),
+		people: people
+	}; // remove null and assign it to proper value
+
+	
+	reservation_list.push(reservation);
+	saveReservationsToJSONFile(reservation_list);
+
+	//Increment restaurant information
+	for (let i = 0; i < restaurant_list.length; i++) {
+		if (restaurant_list[i].name == restaurant) {
+			restaurant_list[i].numReservations += 1;
+			break;
+		}
+	}
+	saveRestaurantsToJSONFile(restaurant_list);
+
 	return reservation;
 
 }
@@ -114,6 +141,12 @@ const getRestaurantByName = (name) => {
 // Should return an array - check to make sure reservations.json exists
 const getAllReservations = () => {
   /* Add your code below */
+	if (!fs.existsSync('reservations.json')) {
+		return []
+	}
+
+	const reservation_list = fs.readFileSync('reservations.json');
+	return JSON.parse(reservation_list);
 
 };
 

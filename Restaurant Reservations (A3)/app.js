@@ -14,6 +14,11 @@ const reservations = require('./reservations');
 
 // datetime available if needed
 const datetime = require('date-and-time') 
+// Import a plugin "meridiem".
+require('date-and-time/plugin/meridiem');
+
+// Apply the plugin to "date-and-time".
+datetime.plugin('meridiem');
 
 const yargs_argv = yargs.argv
 log(yargs_argv) // uncomment to see what is in the argument array
@@ -21,7 +26,7 @@ log(yargs_argv) // uncomment to see what is in the argument array
 if ('addRest' in yargs_argv) {
 	const args = yargs_argv['addRest']
 	if (args[0] == undefined) {
-		log("No restaurant specified");
+		//log("No restaurant specified"); DO NOTHING
 	}	
 	else {
 	const rest = reservations.addRestaurant(args[0], args[1]);
@@ -40,6 +45,11 @@ if ('addResv' in yargs_argv) {
 	const resv = reservations.addReservation(args[0], args[1], args[2]);
 
 	// Produce output below
+	let reservationDateTime = new Date(args[1]);
+	let date = datetime.format(reservationDateTime, 'MMM D YYYY');
+	let time = datetime.format(reservationDateTime, 'h:mm aa');
+
+	log("Added reservation at " + args[0] + ' on ' + date + " at " + time + " for " + args[2] + " people.");
 	
 }
 
