@@ -55,8 +55,11 @@ if ('addResv' in yargs_argv) {
 
 if ('allRest' in yargs_argv) {
 	const restaurants = reservations.getAllRestaurants(); // get the array
-	
+	for (let i = 0; i < restaurants.length; i++){
 	// Produce output below
+	log(restaurants[i].name + ": " + restaurants[i].description + " - " + restaurants[i].numReservations + " active reservations");
+	}
+
 }
 
 if ('restInfo' in yargs_argv) {
