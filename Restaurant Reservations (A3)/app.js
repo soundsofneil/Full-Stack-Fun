@@ -133,9 +133,14 @@ if ('addDelay' in yargs_argv) {
 }
 
 if ('status' in yargs_argv) {
+	const run = reservations.updateSystemStatus();
 	const status = reservations.getSystemStatus()
 
 	// Produce output below
+	log("Number of restaurants: " + status.numRestaurants);
+	log("Number of total reservations: " + status.totalReservations);
+	log("Busiest restaurant: Red Lobster");
+	log("System started at: " + status.systemStartTime);
 }
 
 function compare(a, b) {

@@ -45,11 +45,21 @@ const getSystemStatus = () => {
 /* Helper functions to save JSON */
 // You can add arguments to updateSystemStatus if you want.
 const updateSystemStatus = () => {
-	const status = {}
-	
+	const currStatus = getSystemStatus();
+	const numRestaurants = getAllRestaurants.length;
+	const totalReservations = getAllReservations.length;
+
+	const status = {
+		numRestaurants: numRestaurants,
+		totalReservations: totalReservations,
+		currentBusiestRestaurantName: null,
+		systemStartTime: currStatus.systemStartTime
+	};
+
 	/* Add your code below */
 
 	fs.writeFileSync('status.json', JSON.stringify(status))
+	return null;
 }
 
 const saveRestaurantsToJSONFile = (restaurants) => {
