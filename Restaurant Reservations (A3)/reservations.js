@@ -162,7 +162,16 @@ const getAllReservations = () => {
 // Should return an array
 const getAllReservationsForRestaurant = (name) => {
 	/* Add your code below */
+	let reservations_restaurant = [];
+	const reservations_list = getAllReservations();
 
+	for (let i = 0; i < reservations_list.length; i++) {
+		if (reservations_list[i].restaurant == name) {
+			reservations_restaurant.push(reservations_list[i]);
+		}
+	}
+
+	return reservations_restaurant;
 };
 
 
