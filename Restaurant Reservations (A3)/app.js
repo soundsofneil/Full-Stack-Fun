@@ -108,13 +108,19 @@ if ('checkOff' in yargs_argv) {
 	const earliestReservation = reservations.checkOffEarliestReservation(restaurantName); 
 	
 	// Produce output below
+	let reservationDateTime = new Date(earliestReservation.time);
+	let people = earliestReservation.people;
+	let date = datetime.format(reservationDateTime, 'MMM D YYYY');
+	let time = datetime.format(reservationDateTime, 'h:mm aa');
+	log("Checked off reservation on " + date + ", " + time + ", " + "table for " + people);
 }
 
 if ('addDelay' in yargs_argv) {
 	const args = yargs_argv['addDelay']
 	const resv = reservations.addDelayToReservations(args[0], args[1]);	
 
-	// Produce output below
+	// Produce output below+
+	
 	
 }
 

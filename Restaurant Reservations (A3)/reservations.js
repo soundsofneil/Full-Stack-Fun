@@ -196,8 +196,36 @@ const getReservationsForHour = (time) => {
 
 // should return a reservation object
 const checkOffEarliestReservation = (restaurantName) => {
-	
-	const checkedOffReservation = null; // remove null and assign it to proper value
+	const checkedOffReservation = getAllReservationsForRestaurant(restaurantName).sort(compare)[0]; // remove null and assign it to proper value
+	console.log(checkedOffReservation.time);
+	var reservation_list = getAllReservations();
+	let removeIndex = -1;
+	var restaurant_list = getAllRestaurants();
+
+	//Remove reservation information
+	for (let i = 0; i < reservation_list.length; i++) {
+		if (isEquivalent(reservation_list[i], checkedOffReservation)) {
+			removeIndex = i;
+			console.log(i);
+			break;
+		}
+	}
+
+	if (removeIndex >= 0) {
+	reservation_list.splice(removeIndex, 1);
+	saveReservationsToJSONFile(reservation_list);
+	}
+
+	//Decrement restaurant information
+	for (let i = 0; i < restaurant_list.length; i++) {
+		if (restaurant_list[i].name == restaurantName) {
+			restaurant_list[i].numReservations -= 1;
+			break;
+		}
+	}
+
+	saveRestaurantsToJSONFile(restaurant_list);
+
  	return checkedOffReservation;
 }
 
@@ -223,3 +251,41 @@ module.exports = {
 	addDelayToReservations
 }
 
+function compare(a, b) {
+	const dateA = a.time;
+	const dateB = b.time;
+  
+	let comparison = 0;
+	if (dateB > dateA) {
+	  comparison = -1;
+	} else if (dateA < dateB) {
+	  comparison = 1;
+	}
+	return comparison;
+  }
+
+  function isEquivalent(a, b) {
+    // Create arrays of property names
+    var aProps = Object.getOwnPropertyNames(a);
+    var bProps = Object.getOwnPropertyNames(b);
+
+    // If number of properties is different,
+    // objects are not equivalent
+    if (aProps.length != bProps.length) {
+        return false;
+    }
+
+    for (var i = 0; i < aProps.length; i++) {
+        var propName = aProps[i];
+
+        // If values of same property are not equal,
+        // objects are not equivalent
+        if (a[propName] !== b[propName]) {
+            return false;
+        }
+    }
+
+    // If we made it this far, objects
+    // are considered equivalent
+    return true;
+}
