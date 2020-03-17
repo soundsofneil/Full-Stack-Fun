@@ -135,7 +135,16 @@ const getAllRestaurants = () => {
 // Should return the restaurant object if found, or an empty object if the restaurant is not found.
 const getRestaurantByName = (name) => {
 	/* Add your code below */
+	let restaurant = {};
+	const restaurant_list = getAllRestaurants();
 
+	for (let i = 0; i < restaurant_list.length; i++) {
+		if (restaurant_list[i].name == name) {
+			restaurant = restaurant_list[i];
+			break;
+		}
+	}
+	return restaurant;
 };
 
 // Should return an array - check to make sure reservations.json exists

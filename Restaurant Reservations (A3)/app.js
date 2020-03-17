@@ -21,7 +21,7 @@ require('date-and-time/plugin/meridiem');
 datetime.plugin('meridiem');
 
 const yargs_argv = yargs.argv
-log(yargs_argv) // uncomment to see what is in the argument array
+//log(yargs_argv) // uncomment to see what is in the argument array
 
 if ('addRest' in yargs_argv) {
 	const args = yargs_argv['addRest']
@@ -66,7 +66,7 @@ if ('restInfo' in yargs_argv) {
 	const restaurants = reservations.getRestaurantByName(yargs_argv['restInfo']);
 
 	// Produce output below
-
+	log(restaurants.name + ": " + restaurants.description + " - " + restaurants.numReservations + " active reservations");
 }
 
 if ('allResv' in yargs_argv) {
