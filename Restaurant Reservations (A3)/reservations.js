@@ -197,7 +197,6 @@ const getReservationsForHour = (time) => {
 // should return a reservation object
 const checkOffEarliestReservation = (restaurantName) => {
 	const checkedOffReservation = getAllReservationsForRestaurant(restaurantName).sort(compare)[0]; // remove null and assign it to proper value
-	console.log(checkedOffReservation.time);
 	var reservation_list = getAllReservations();
 	let removeIndex = -1;
 	var restaurant_list = getAllRestaurants();
@@ -206,7 +205,6 @@ const checkOffEarliestReservation = (restaurantName) => {
 	for (let i = 0; i < reservation_list.length; i++) {
 		if (isEquivalent(reservation_list[i], checkedOffReservation)) {
 			removeIndex = i;
-			console.log(i);
 			break;
 		}
 	}
@@ -232,6 +230,22 @@ const checkOffEarliestReservation = (restaurantName) => {
 
 const addDelayToReservations = (restaurant, minutes) => {
 	// Hint: try to use a functional array method
+	const delayTime = 60000 * minutes;
+	var reservation_list = getAllReservations();
+	var delayed_reservations = [];
+
+	for (let i = 0; i < reservation_list.length; i++) {
+		if (reservation_list[i].restaurant === restaurant) {
+			let reservationTime = new Date(reservation_list[i].time);
+			reservationTime.setTime(reservationTime.getTime() + delayTime);
+			reservation_list[i].time = reservationTime;
+			delayed_reservations.push(reservation_list[i]);
+		}
+	}
+
+	saveReservationsToJSONFile(reservation_list);
+
+	return delayed_reservations;
 	
 }
 

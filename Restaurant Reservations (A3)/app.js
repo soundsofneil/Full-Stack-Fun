@@ -117,10 +117,18 @@ if ('checkOff' in yargs_argv) {
 
 if ('addDelay' in yargs_argv) {
 	const args = yargs_argv['addDelay']
-	const resv = reservations.addDelayToReservations(args[0], args[1]);	
+	const resv = reservations.addDelayToReservations(args[0], args[1]);
+	resv.sort(compare); //Sort by date ascending	
 
 	// Produce output below+
-	
+	log("Reservations for " + args[0] + ":")
+	for (let i = 0; i < resv.length; i++){
+		let reservationDateTime = new Date(resv[i].time);
+		let people = resv[i].people;
+		let date = datetime.format(reservationDateTime, 'MMM D YYYY');
+		let time = datetime.format(reservationDateTime, 'h:mm aa');
+		log("- " + date + ", " + time + ", " + "table for " + people);
+	}
 	
 }
 
