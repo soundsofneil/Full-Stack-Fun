@@ -72,7 +72,7 @@ if ('restInfo' in yargs_argv) {
 if ('allResv' in yargs_argv) {
 	const restaurantName = yargs_argv['allResv']
 	const reservationsForRestaurant = reservations.getAllReservationsForRestaurant(restaurantName); // get the array
-	reservationsForRestaurant.sort(compare); //Sort by date ascending
+	reservationsForRestaurant.sort(compare); //Sort by time
 	
 	// Produce output below
 	log("Reservations for " + restaurantName + ":")
@@ -89,8 +89,18 @@ if ('allResv' in yargs_argv) {
 if ('hourResv' in yargs_argv) {
 	const time = yargs_argv['hourResv']
 	const reservationsForRestaurant = reservations.getReservationsForHour(time); // get the array
-	
+	reservationsForRestaurant.sort(compare); //Sort by date ascending
+
 	// Produce output below
+	log("Reservations in the next hour:")
+	for (let i = 0; i < reservationsForRestaurant.length; i++){
+		let reservationDateTime = new Date(reservationsForRestaurant[i].time);
+		let name  = reservationsForRestaurant[i].restaurant;
+		let people = reservationsForRestaurant[i].people;
+		let date = datetime.format(reservationDateTime, 'MMM D YYYY');
+		let time = datetime.format(reservationDateTime, 'h:mm aa');
+		log("- " + name + ": " + date + ", " + time + ", " + "table for " + people);
+	}
 }
 
 if ('checkOff' in yargs_argv) {

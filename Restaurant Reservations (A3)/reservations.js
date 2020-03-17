@@ -178,7 +178,20 @@ const getAllReservationsForRestaurant = (name) => {
 // Should return an array
 const getReservationsForHour = (time) => {
 	/* Add your code below */
+	let reservations_hour = [];
+	const reservations_list = getAllReservations();
+	const one_hour = 60 * 60 * 1000;
+	const timeToCompare = new Date(time);
 
+	for (let i = 0; i < reservations_list.length; i++) {
+		let reservation_time = new Date(reservations_list[i].time);
+		let timeDiff = reservation_time - timeToCompare
+		if (timeDiff < one_hour && timeDiff >= 0) {
+			reservations_hour.push(reservations_list[i]);
+		}
+	}
+
+	return reservations_hour;
 }
 
 // should return a reservation object
