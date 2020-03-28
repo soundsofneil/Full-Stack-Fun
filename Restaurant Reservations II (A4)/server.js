@@ -25,8 +25,15 @@ Returned JSON should be the database document added.
 */
 // POST /restaurants
 app.post('/restaurants', (req, res) => {
-	// Add code here
-
+	var newRestaurant = new Restaurant(); 
+	newRestaurant.name = req.body.name;
+	newRestaurant.description = req.body.description;
+	newRestaurant.reservations = req.body.reservations;
+	newRestaurant.save().then((result) => {
+		res.send(result)
+	}, (error) => {
+		res.status(400).send(error) // 400 for bad request
+	})
 })
 
 
