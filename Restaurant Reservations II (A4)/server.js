@@ -98,7 +98,7 @@ app.post('/restaurants/:id', (req, res) => {
 		return;  // so that we don't run the rest of the handler.
 	}
 
-	// get the updated time and people only from the request body.
+	// get the time and people only from the request body.
 	const { time, people } = req.body
 	const reservationBody = { time, people }
 
@@ -208,6 +208,31 @@ Request body expects:
 // PATCH restaurant/<restaurant_id>/<reservation_id>
 app.patch('/restaurants/:id/:resv_id', (req, res) => {
 	// Add code here
+	const id = req.params.id
+	const rid = req.params.resv_id
+
+	// Good practise: Validate id immediately.
+	if (!ObjectID.isValid(id)) {
+		res.status(404).send()  // if invalid id, definitely can't find resource, 404.
+		return;  // so that we don't run the rest of the handler.
+	}
+	
+	// get the time and people only from the request body.
+	const { time, people } = req.body
+	const reservationBody = { time, people }
+	
+	Restaurant.findOne({_id: id}).then((restaurant) => {
+		let reservation = restaurant.reservations.id(rid);
+		reservation.time = reservationBody.time;
+		reservation.people = reservationBody.people;
+		restaurant.save().then((updatedRestaurant) => {
+			res.send({reservation: reservation, restaurant: updatedRestaurant})
+		}).catch((error) => {
+			res.status(404).send(error);
+		}).catch((error) => {
+			res.status(500).send(error);
+	})
+})
 
 })
 
