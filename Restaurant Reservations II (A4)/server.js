@@ -89,8 +89,32 @@ Request body expects:
 //   { "reservation": <reservation subdocument>, "restaurant": <entire restaurant document>}
 // POST /restaurants/id
 app.post('/restaurants/:id', (req, res) => {
-	// Add code here
+	const id = req.params.id
+	
 
+	// Good practise: Validate id immediately.
+	if (!ObjectID.isValid(id)) {
+		res.status(404).send()  // if invalid id, definitely can't find resource, 404.
+		return;  // so that we don't run the rest of the handler.
+	}
+
+	// get the updated time and people only from the request body.
+	const { time, people } = req.body
+	const reservationBody = { time, people }
+
+	Restaurant.findByIdAndUpdate(id, {$push: {reservations: reservationBody}}).then((restaurant) => {
+		if (!restaurant) {
+			res.status(404).send()
+		} else {
+			const returnJSON = {
+				reservation: reservationBody,
+				restaurant: restaurant
+			}   
+			res.send(returnJSON);
+		}
+	}).catch((error) => {
+		res.status(400).send() // bad request for changing the restaurant.
+	})
 })
 
 
