@@ -52,7 +52,26 @@ app.get('/restaurants', (req, res) => {
 /// Route for getting information for one restaurant.
 // GET /restaurants/id
 app.get('/restaurants/:id', (req, res) => {
-	// Add code here
+	const id = req.params.id
+
+	// Good practise: Validate id immediately.
+	if (!ObjectID.isValid(id)) {
+		res.status(404).send()  // if invalid id, definitely can't find resource, 404.
+		return;  // so that we don't run the rest of the handler.
+	}
+
+	// Otherwise, findById
+	Restaurant.findById(id).then((restaurant) => {
+		if (!restaurant) {
+			res.status(404).send()  // could not find this restaurant
+		} else {
+			/// sometimes we wrap returned object in another object:
+			//res.send({restaurant})   
+			res.send(restaurant)
+		}
+	}).catch((error) => {
+		res.status(500).send()  // server error
+	})
 
 })
 
