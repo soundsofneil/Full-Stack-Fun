@@ -28,7 +28,7 @@ app.post('/restaurants', (req, res) => {
 	var newRestaurant = new Restaurant(); 
 	newRestaurant.name = req.body.name;
 	newRestaurant.description = req.body.description;
-	newRestaurant.reservations = req.body.reservations;
+	newRestaurant.reservations = []; //empty array
 	newRestaurant.save().then((result) => {
 		res.send(result)
 	}, (error) => {
