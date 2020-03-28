@@ -40,7 +40,11 @@ app.post('/restaurants', (req, res) => {
 /// Route for getting all restaurant information.
 // GET /restaurants
 app.get('/restaurants', (req, res) => {
-	// Add code here
+	Restaurant.find().then((restaurants) => {
+		res.send({ restaurants }) // can wrap in object if want to add more properties
+	}, (error) => {
+		res.status(500).send(error) // server error
+	})
 
 })
 
