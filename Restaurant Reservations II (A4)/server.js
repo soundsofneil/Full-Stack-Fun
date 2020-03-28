@@ -122,6 +122,31 @@ app.post('/restaurants/:id', (req, res) => {
 // GET /restaurants/id
 app.get('/restaurants/:id/:resv_id', (req, res) => {
 	// Add code here
+	const id = req.params.id
+	const rid = req.params.resv_id
+
+	// Good practise: Validate id immediately.
+	if (!ObjectID.isValid(id)) {
+		res.status(404).send()  // if invalid id, definitely can't find resource, 404.
+		return;  // so that we don't run the rest of the handler.
+	}
+
+	// Otherwise, findById
+	Restaurant.findById(id).then((restaurant) => {
+		if (!restaurant) {
+			res.status(404).send()  // could not find this restaurant
+		} else { //restaurant found
+			const targetReservation = restaurant.reservations.id(rid);
+			if (!targetReservation) {
+				res.status(404).send()  // could not find this reservation
+			}
+			else {
+				res.send(targetReservation);
+			}
+		}
+	}).catch((error) => {
+		res.status(500).send()  // server error
+	})
 
 })
 
