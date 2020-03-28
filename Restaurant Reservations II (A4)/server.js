@@ -102,7 +102,7 @@ app.post('/restaurants/:id', (req, res) => {
 	const { time, people } = req.body
 	const reservationBody = { time, people }
 
-	Restaurant.findByIdAndUpdate(id, {$push: {reservations: reservationBody}}).then((restaurant) => {
+	Restaurant.findByIdAndUpdate(id, {$push: {reservations: reservationBody}}, {new:true}).then((restaurant) => {
 		if (!restaurant) {
 			res.status(404).send()
 		} else {
@@ -158,6 +158,38 @@ app.get('/restaurants/:id/:resv_id', (req, res) => {
 // DELETE restaurant/<restaurant_id>/<reservation_id>
 app.delete('/restaurants/:id/:resv_id', (req, res) => {
 	// Add code here
+	const id = req.params.id
+	const rid = req.params.resv_id
+	
+	// Good practise: Validate id immediately.
+	if (!ObjectID.isValid(id)) {
+		res.status(404).send()  // if invalid id, definitely can't find resource, 404.
+		return;  // so that we don't run the rest of the handler.
+	}
+
+	// Otherwise, findById
+	Restaurant.findById(id).then((restaurant) => {
+		if (!restaurant) {
+			res.status(404).send()  // could not find this restaurant
+		} else { //restaurant found
+			const targetReservation = restaurant.reservations.id(rid);
+			Restaurant.findByIdAndUpdate(id, {$pull: {reservations: {_id:rid} }}, {new: true}).then((restaurant) => {
+				if (!restaurant) {
+					res.status(404).send()
+				} else {
+					const returnJSON = {
+						reservation: targetReservation,
+						restaurant: restaurant
+					}   
+					res.send(returnJSON);
+				}
+			}).catch((error) => {
+				res.status(400).send() // bad request for changing the restaurant.
+			})
+		}
+	}).catch((error) => {
+		res.status(500).send()  // server error
+	})
 
 })
 
